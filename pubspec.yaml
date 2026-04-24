@@ -31,10 +31,6 @@ dependencies:
   # 文件选择
   file_picker: ^6.1.1
   
-  # 桌面端支持
-  window_manager: ^0.3.7
-  system_tray: ^2.0.3
-  
   # 工具
   intl: ^0.19.0
   url_launcher: ^6.2.4

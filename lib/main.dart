@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 import 'screens/home_screen.dart';
+import 'screens/login_screen.dart';
 import 'services/api_service.dart';
+import 'services/tray_service.dart';
+import 'services/websocket_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // 初始化窗口管理器
   await windowManager.ensureInitialized();
-  
+
   WindowOptions windowOptions = const WindowOptions(
     size: Size(1200, 800),
     center: true,
@@ -17,15 +20,18 @@ void main() async {
     titleBarStyle: TitleBarStyle.normal,
     title: 'P2P IM Portal',
   );
-  
+
   await windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.show();
     await windowManager.focus();
   });
-  
+
   // 初始化 API 服务
   await ApiService().initialize();
-  
+
+  // 初始化系统托盘
+  await TrayService().initialize();
+
   runApp(const MyApp());
 }
 
@@ -53,7 +59,31 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'NotoSansSC',
       ),
-      home: const HomeScreen(),
+      home: const AuthWrapper(),
+    );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<String?>(
+      future: ApiService().getToken(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (snapshot.hasData && snapshot.data != null) {
+          return const HomeScreen();
+        }
+
+        return const LoginScreen();
+      },
     );
   }
 }

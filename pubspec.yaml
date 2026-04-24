@@ -1,0 +1,44 @@
+name: p2p_portal_desktop
+description: P2P IM Portal Desktop Client for Linux (ARM64)
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # 网络请求
+  dio: ^5.4.0
+  
+  # WebSocket
+  web_socket_channel: ^2.4.0
+  
+  # 本地存储
+  shared_preferences: ^2.2.2
+  
+  # 状态管理
+  provider: ^6.1.1
+  
+  # 桌面端支持
+  window_manager: ^0.3.7
+  system_tray: ^2.0.3
+  
+  # 文件选择
+  file_picker: ^6.1.1
+  
+  # 工具
+  intl: ^0.19.0
+  url_launcher: ^6.2.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
